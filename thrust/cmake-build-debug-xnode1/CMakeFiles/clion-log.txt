@@ -1,0 +1,29 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/zhaomin/project/DeltaBoost/thrust -B /home/zhaomin/project/DeltaBoost/thrust/cmake-build-debug-xnode1
+-- The CXX compiler identification is GNU 10.3.0
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Thrust: /home/zhaomin/project/DeltaBoost/thrust/thrust/cmake/thrust-config.cmake (found version "1.11.0.0") 
+CMake Error at thrust/cmake/thrust-config.cmake:494 (find_package):
+  Could not find a package configuration file provided by "CUB" with any of
+  the following names:
+
+    CUBConfig.cmake
+    cub-config.cmake
+
+  Add the installation prefix of "CUB" to CMAKE_PREFIX_PATH or set "CUB_DIR"
+  to a directory containing one of the above files.  If "CUB" provides a
+  separate development package or SDK, be sure it has been installed.
+Call Stack (most recent call first):
+  thrust/cmake/thrust-config.cmake:600 (_thrust_find_CUDA)
+  thrust/cmake/thrust-config.cmake:169 (_thrust_find_backend)
+  cmake/ThrustBuildTargetList.cmake:232 (thrust_create_target)
+  cmake/ThrustBuildTargetList.cmake:281 (_thrust_build_target_list_singleconfig)
+  CMakeLists.txt:161 (thrust_build_target_list)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/zhaomin/project/DeltaBoost/thrust/cmake-build-debug-xnode1/CMakeFiles/CMakeOutput.log".

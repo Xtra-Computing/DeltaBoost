@@ -2,8 +2,12 @@
 // Created by liqinbin on 10/13/20.
 //
 
+#include "FedTree/FL/FLparam.h"
+#include "FedTree/FL/FLtrainer.h"
+#include "FedTree/FL/partition.h"
 #include "FedTree/parser.h"
 #include "FedTree/dataset.h"
+//#include "FedTree/Tree/gbdt.h"
 #include "FedTree/Tree/deltaboost.h"
 
 
@@ -17,11 +21,42 @@ int main(int argc, char** argv){
     el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
     el::Loggers::addFlag(el::LoggingFlag::FixedTimeFormat);
 
+/*
+    //initialize parameters
+    FLParam fl_param;
+    Parser parser;
+    parser.parse_param(fl_param, argc, argv);
+
+    //load dataset from file/files
+    DataSet dataset;
+    dataset.load_from_file(fl_param.dataset_path);
+
+    //initialize parties and server *with the dataset*
+    vector<Party> parties;
+    for(i = 0; i < fl_param.n_parties; i++){
+        Party party;
+        parties.push_back(party);
+    }
+    Server server;
+
+    //train
+    FLtrainer trainer;
+    model = trainer.train(parties, server, fl_param);
+
+    //test
+    Dataset test_dataset;
+    test_dataset.load_from_file(fl_param.test_dataset_path);
+    acc = model.predict(test_dataset);
+*/
+
+    omp_set_dynamic(0);
+//    omp_set_num_threads(64);
+
+//centralized training test
     FLParam fl_param;
     Parser parser;
     parser.parse_param(fl_param, argc, argv);
     GBDTParam &model_param = fl_param.gbdt_param;
-
     if(model_param.verbose == 0) {
         el::Loggers::reconfigureAllLoggers(el::Level::Debug, el::ConfigurationType::Enabled, "false");
         el::Loggers::reconfigureAllLoggers(el::Level::Trace, el::ConfigurationType::Enabled, "false");
@@ -35,7 +70,22 @@ int main(int argc, char** argv){
     if (!model_param.profiling) {
         el::Loggers::reconfigureAllLoggers(el::ConfigurationType::PerformanceTracking, "false");
     }
-
+//    if(fl_param.mode == "centralized") {
+//        DataSet dataset;
+//        vector <vector<Tree>> boosted_model;
+//        dataset.load_from_file(model_param.path, fl_param);
+//        std::map<int, vector<int>> batch_idxs;
+//        Partition partition;
+//        vector<DataSet> subsets(3);
+//        partition.homo_partition(dataset, 3, true, subsets, batch_idxs);
+//        GBDT gbdt;
+//        gbdt.train(model_param, dataset);
+////       float_type score = gbdt.predict_score(model_param, dataset);
+//       // LOG(INFO) << score;
+//      //  parser.save_model("tgbm.model", model_param, gbdt.trees, dataset);
+//    }
+//    }
+//    else{
     int n_parties = fl_param.n_parties;
     vector<DataSet> train_subsets(n_parties);
     vector<DataSet> test_subsets(n_parties);
@@ -46,17 +96,37 @@ int main(int argc, char** argv){
     bool use_global_test_set = !model_param.test_path.empty();
     dataset.load_from_csv(model_param.path, fl_param);
 
-    if (!dataset.has_csc) {
-        dataset.csr_to_csc();
-    }
-
     DataSet test_dataset;
     if (use_global_test_set)
         test_dataset.load_from_csv(model_param.test_path, fl_param);
 
+//    if (ObjectiveFunction::need_group_label(param.gbdt_param.objective)) {
+//        group_label();
+//        param.gbdt_param.num_class = label.size();
+//    }
+
     GBDTParam &param = fl_param.gbdt_param;
 
+//    if (param.objective.find("multi:") != std::string::npos || param.objective.find("binary:") != std::string::npos || param.metric == "error") {
+//        for (int i = 0; i < n_parties; i++) {
+//            train_subsets[i].group_label();
+//            test_subsets[i].group_label();
+//        }
+//        int num_class = dataset.label.size();
+//        if (param.num_class != num_class) {
+//            LOG(INFO) << "updating number of classes from " << param.num_class << " to " << num_class;
+//            param.num_class = num_class;
+//        }
+//        if(param.num_class > 2)
+//            param.tree_per_rounds = param.num_class;
+//    }
+//    else if(param.objective.find("reg:") != std::string::npos){
+//        param.num_class = 1;
+//    }
+
+
     LOG(INFO) << "start training";
+    FLtrainer trainer;
     if (param.tree_method == "auto")
         param.tree_method = "hist";
     else if (param.tree_method != "hist"){
@@ -82,18 +152,14 @@ int main(int argc, char** argv){
             float_type score;
             string model_path = string_format("cache/%s_deltaboost.model",
                                               fl_param.deltaboost_param.save_model_name.c_str());
-            deltaboost->train(fl_param.deltaboost_param, dataset);      // train
-//            parser.save_model(model_path, fl_param.deltaboost_param, *deltaboost, dataset);     // save
-
-//            auto deltaboost_load = std::unique_ptr<DeltaBoost>(new DeltaBoost());
-//            parser.load_model(model_path, fl_param.deltaboost_param, *deltaboost, dataset);     // load
-
-            deltaboost->trim_unused_members_();
-
+            deltaboost->train(fl_param.deltaboost_param, dataset);
+//            parser.save_model(model_path, fl_param.deltaboost_param, *deltaboost, dataset);
+//            parser.load_model(model_path, fl_param.deltaboost_param, *deltaboost, dataset);
 
             string model_path_json = string_format("cache/%s_deltaboost.json",
                                               fl_param.deltaboost_param.save_model_name.c_str());
             parser.save_model_to_json(model_path_json, fl_param.deltaboost_param, *deltaboost, dataset);
+
 
             LOG(INFO) << "On test dataset";
             vector<float_type> test_scores;
@@ -116,89 +182,16 @@ int main(int argc, char** argv){
 
             if (fl_param.deltaboost_param.perform_remove) {
                 // start removal
+                std::chrono::high_resolution_clock timer;
+                auto start_rm = timer.now();
                 int num_removals = static_cast<int>(fl_param.deltaboost_param.remove_ratio * dataset.n_instances());
                 LOG(INFO) << num_removals << " samples to be removed from model";
                 vector<int> removing_indices(static_cast<int>(fl_param.deltaboost_param.remove_ratio * dataset.n_instances()));
                 std::iota(removing_indices.begin(), removing_indices.end(), 0);
-
-                typedef std::chrono::high_resolution_clock timer;
-                auto start_rm = timer::now();
-
-//                deltaboost->remove_samples(fl_param.deltaboost_param, dataset, removing_indices);
-                ////////////////////////////////////////// start
-                auto &param = fl_param.deltaboost_param;
-                const auto &sample_indices = removing_indices;
-
-//                typedef std::chrono::high_resolution_clock timer;
-                auto start_time = timer::now();
-                auto end_time = timer::now();
-                std::chrono::duration<double> duration = end_time - start_time;
-
-                LOG(INFO) << "start removing samples";
-
-                start_time = timer::now();
-
-                SyncArray<float_type> y = SyncArray<float_type>(dataset.n_instances());
-                y.copy_from(dataset.y.data(), dataset.n_instances());
-                std::unique_ptr<ObjectiveFunction> obj(ObjectiveFunction::create(param.objective));
-                obj->configure(param, dataset);     // slicing param
-
-                end_time = timer::now();
-                duration = end_time - start_time;
-                LOG(INFO) << "Copy y time: " << duration.count();
-
-                LOG(INFO) << "Preparing for deletion";
-
-                DeltaBoostRemover deltaboost_remover;
-                if (param.hash_sampling_round > 1) {
-                    deltaboost_remover = DeltaBoostRemover(&dataset, &(deltaboost->trees), deltaboost->is_subset_indices_in_tree, obj.get(), param);
-                } else {
-                    start_time = timer::now();
-
-                    deltaboost_remover = DeltaBoostRemover(&dataset, &(deltaboost->trees), obj.get(), param);
-
-                    end_time = timer::now();
-                    duration = end_time - start_time;
-                    LOG(DEBUG) << "[Removing time] Step 0 (out) = " << duration.count();
-                }
-
-                deltaboost_remover.n_all_instances = dataset.n_instances();
-
-//    deltaboost_remover.get_info_by_prediction(gh_pairs_per_sample);
-                deltaboost_remover.get_info(deltaboost->gh_pairs_per_sample, deltaboost->ins2node_indices_per_tree);
-
-                LOG(INFO) << "Deleting " << param.n_used_trees << " trees";
-
-#pragma omp parallel for
-                for (int i = 0; i < param.n_used_trees; ++i) {
-
-                    DeltaTreeRemover& tree_remover = deltaboost_remover.tree_removers[i];
-                    vector<bool> is_iid_removed = indices_to_hash_table(sample_indices, dataset.n_instances());
-                    tree_remover.is_iid_removed = is_iid_removed;
-                    const std::vector<GHPair>& gh_pairs = tree_remover.gh_pairs;
-                    vector<int> trained_sample_indices;
-                    if (param.hash_sampling_round > 1) {
-                        std::copy_if(sample_indices.begin(), sample_indices.end(), std::back_inserter(trained_sample_indices), [&](int idx){
-                            return deltaboost->is_subset_indices_in_tree[i][idx];
-                        });
-                    } else {
-                        trained_sample_indices = sample_indices;
-                    }
-
-                    tree_remover.remove_samples_by_indices(trained_sample_indices);
-                    tree_remover.prune();
-                }
-
-                end_time = timer::now();
-                duration = end_time - start_time;
-                LOG(INFO) << "Removing time in function = " << duration.count();
-
-                auto stop_rm = timer::now();
+                deltaboost->remove_samples(fl_param.deltaboost_param, dataset, removing_indices);
+                auto stop_rm = timer.now();
                 std::chrono::duration<float> removing_time = stop_rm - start_rm;
                 LOG(INFO) << "removing time = " << removing_time.count();
-
-
-                //////////////////////// end
 
                 LOG(INFO) << "Predict after removals";
                 LOG(INFO) << "On test dataset";
@@ -227,11 +220,6 @@ int main(int argc, char** argv){
         } else {
             auto gbdt = std::unique_ptr<GBDT>(new GBDT());
             gbdt->train(fl_param.gbdt_param, dataset);
-
-            // save model
-            string model_path = string_format("cache/%s_gbdt.model",
-                                              fl_param.gbdt_param.save_model_name.c_str());
-            parser.save_model(model_path, fl_param.gbdt_param, gbdt->trees, dataset);
 
             LOG(INFO) << "On test dataset";
             gbdt->predict_score(fl_param.gbdt_param, test_dataset);

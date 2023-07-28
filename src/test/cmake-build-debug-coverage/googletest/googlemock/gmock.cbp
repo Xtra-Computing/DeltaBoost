@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="gmock"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\googletest\;CMake Files\googletest\googlemock\;CMake Files\googletest\googlemock\cmake\;CMake Files\googletest\googletest\;CMake Files\googletest\googletest\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgmock_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main/fast">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgmock_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main/fast"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgmockd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock/fast">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgmockd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock/fast"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/include"/>
+					<Add directory="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest"/>
+					<Add directory="/usr/include/c++/10"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j96 -f &quot;/home/zhaomin/project/DeltaBoost/src/test/cmake-build-debug-coverage/googletest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/src/gmock-all.cc">
+			<Option target="gmock"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/src/gmock_main.cc">
+			<Option target="gmock_main"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\googletest\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/cmake/gmock.pc.in">
+			<Option virtualFolder="CMake Files\googletest\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googlemock/cmake/gmock_main.pc.in">
+			<Option virtualFolder="CMake Files\googletest\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/zhaomin/project/DeltaBoost/src/test/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\googletest\googletest\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

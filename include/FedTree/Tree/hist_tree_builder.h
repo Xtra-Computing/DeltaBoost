@@ -159,10 +159,6 @@ public:
 
     // MSyncArray<unsigned char> char_dense_bin_id;
     SyncArray<int> dense_bin_id;
-    SyncArray<int> sparse_bin_id;
-    SyncArray<int> sparse_bin_col_ptr;
-    SyncArray<int> sparse_bin_id_map;
-    SyncArray<int> sparse_bin_id_reverse_map;
     SyncArray<GHPair> last_hist;
     SyncArray<GHPair> last_missing_gh;
     // MSyncArray<GHPair> parties_hist;

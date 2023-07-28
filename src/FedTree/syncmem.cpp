@@ -746,14 +746,6 @@ namespace thunder {
         NO_GPU;
 #endif
     }
-
-    void *SyncMem::transfer_host_data() {
-        auto host_ptr_ori = host_ptr;
-        host_ptr = nullptr;
-        own_host_data = false;
-        head_ = HEAD::HOST;
-        return host_ptr_ori;
-    }
 }
 
 #endif //USE_CUDA

@@ -164,17 +164,15 @@ vector<DeltaTree> DeltaTreeBuilder::build_delta_approximate(const SyncArray<GHPa
         duration = end_time - start_time;
         LOG(DEBUG) << "predict_in_training time = " << duration.count();
 
-
+        start_time = timer::now();
         tree_k.nodes = tree.nodes;
         tree_k.dense_bin_id = dense_bin_id.to_vec();
-        start_time = timer::now();
         tree_k.cut = cut;
         tree_k.g_bin_width = g_bin_width;
         tree_k.h_bin_width = h_bin_width;
         end_time = timer::now();
         duration = end_time - start_time;
         LOG(DEBUG) << "copy tree time = " << duration.count();
-
     }
 
     ins2node_indices_in_tree = ins2node_indices;    // return this value for removal
@@ -932,15 +930,15 @@ void DeltaTreeBuilder::update_tree() {
             node.split_value = sp_data[i].fval;
             node.split_bid = sp_data[i].split_bid;
             rch.sum_gh_pair = sp_data[i].rch_sum_gh;
-//            rch.sum_g2 = sp_data[i].rch_sum_g2;
+            rch.sum_g2 = sp_data[i].rch_sum_g2;
             if (sp_data[i].default_right) {
                 rch.sum_gh_pair = rch.sum_gh_pair + p_missing_gh;
-//                rch.sum_g2 = rch.sum_g2 + p_missing_g2;
+                rch.sum_g2 = rch.sum_g2 + p_missing_g2;
                 // LOG(INFO) << "RCH" << rch.sum_gh_pair;
                 node.default_right = true;
             }
             lch.sum_gh_pair = node.sum_gh_pair - rch.sum_gh_pair;
-//            lch.sum_g2 = node.sum_g2 - rch.sum_g2;
+            lch.sum_g2 = node.sum_g2 - rch.sum_g2;
             //  LOG(INFO) << "LCH" << lch.sum_gh_pair;
             lch.calc_weight_(lambda, g_bin_width, h_bin_width);
             rch.calc_weight_(lambda, g_bin_width, h_bin_width);
@@ -1035,29 +1033,30 @@ DeltaTreeBuilder::compute_gain_in_a_level(vector<DeltaTree::DeltaGain> &gain, in
         if (nodes_data[nid].is_valid) {
             int pid = nid0 * n_column + fid;
             GHPair parent_gh = nodes_data[nid].sum_gh_pair;
-//            float_type parent_g2 = nodes_data[nid].sum_g2;
+            float_type parent_g2 = nodes_data[nid].sum_g2;
             GHPair p_missing_gh = missing_gh_data[pid];
-//            float_type p_missing_g2 = missing_g2[pid];
+            float_type p_missing_g2 = missing_g2[pid];
             GHPair rch_gh = gh_prefix_sum_data[i];
-//            float_type rch_g2 = hist_g2[i];
+            float_type rch_g2 = hist_g2[i];
 
             auto lch_gh = parent_gh - rch_gh;
-//            auto lch_g2 = parent_g2 - hist_g2[i];
+            auto lch_g2 = parent_g2 - hist_g2[i];
             int n_remove = static_cast<int>(param.remove_ratio * n_instances);
             DeltaTree::DeltaGain default_to_left_gain(lch_gh.g, lch_gh.h, rch_gh.g, rch_gh.h, parent_gh.g, parent_gh.h,
-                                           p_missing_gh.g, p_missing_gh.h, param.lambda, n_instances, n_remove);
+                                           p_missing_gh.g, p_missing_gh.h, param.lambda, lch_g2, rch_g2, parent_g2,
+                                           p_missing_g2, n_instances, n_remove);
             default_to_left_gain.gain_value = default_to_left_gain.cal_gain_value(mcw);
-//            default_to_left_gain.ev_remain_gain = default_to_left_gain.cal_ev_remain_gain(mcw);
+            default_to_left_gain.ev_remain_gain = default_to_left_gain.cal_ev_remain_gain(mcw);
 
             auto default_to_right_gain = DeltaTree::DeltaGain(default_to_left_gain);
             default_to_right_gain.rch_g += p_missing_gh.g;
             default_to_right_gain.rch_h += p_missing_gh.h;
-//            default_to_right_gain.rch_g2 += p_missing_g2;
+            default_to_right_gain.rch_g2 += p_missing_g2;
             default_to_right_gain.lch_g -= p_missing_gh.g;
             default_to_right_gain.lch_h -= p_missing_gh.h;
-//            default_to_right_gain.lch_g2 -= p_missing_g2;
+            default_to_right_gain.lch_g2 -= p_missing_g2;
             default_to_right_gain.gain_value = -default_to_right_gain.cal_gain_value(mcw);
-//            default_to_right_gain.ev_remain_gain = default_to_right_gain.cal_ev_remain_gain(mcw);
+            default_to_right_gain.ev_remain_gain = default_to_right_gain.cal_ev_remain_gain(mcw);
 
             if (ft_ge(std::fabs(default_to_left_gain.gain_value), std::fabs(default_to_right_gain.gain_value), 1e-2)) {
                 gain[i] = default_to_left_gain;

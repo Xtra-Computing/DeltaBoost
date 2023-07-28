@@ -4,6 +4,7 @@
 
 #include "FedTree/Tree/gbdt.h"
 #include "FedTree/booster.h"
+#include "FedTree/FL/partition.h"
 
 
 void GBDT::train(GBDTParam &param, DataSet &dataset) {

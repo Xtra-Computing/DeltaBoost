@@ -5,10 +5,25 @@
 #include <fstream>
 #include "FedTree/booster.h"
 
-void Booster::init(DataSet &dataSet, const GBDTParam &param, bool get_cut_points) {
+//std::mutex mtx;
 
+//void Booster::init(const GBDTParam &param, int n_instances) {
+//    this -> param = param;
+//    fbuilder.reset(new HistTreeBuilder);
+//    fbuilder->init(param, n_instances);
+//    n_devices = param.n_device;
+//    int n_outputs = param.num_class * n_instances;
+//    gradients = SyncArray<GHPair>(n_outputs);
+//}
+
+void Booster::init(DataSet &dataSet, const GBDTParam &param, bool get_cut_points) {
+//    int n_available_device;
+//    cudaGetDeviceCount(&n_available_device);
+//    CHECK_GE(n_available_device, param.n_device) << "only " << n_available_device
+//                                                 << " GPUs available; please set correct number of GPUs to use";
     this->param = param;
 
+//    fbuilder.reset(FunctionBuilder::create(param.tree_method));
     fbuilder.reset(new HistTreeBuilder);
     if(get_cut_points)
         fbuilder->init(dataSet, param);
@@ -42,6 +57,18 @@ void Booster::set_gradients(SyncArray<GHPair> &gh) {
     gradients.copy_from(gh);
 }
 
+//void Booster::encrypt_gradients(AdditivelyHE::PaillierPublicKey pk) {
+//    auto gradients_data = gradients.host_data();
+//    for (int i = 0; i < gradients.size(); i++)
+//        gradients_data[i].homo_encrypt(pk);
+//}
+
+//void Booster::decrypt_gradients(AdditivelyHE::PaillierPrivateKey privateKey) {
+//    auto gradients_data = gradients.host_data();
+//    for (int i = 0; i < gradients.size(); i++)
+//        gradients_data[i].homo_decrypt(privateKey);
+//}
+
 void Booster::add_noise_to_gradients(float variance) {
     auto gradients_data = gradients.host_data();
     for (int i = 0; i < gradients.size(); i++) {
@@ -56,15 +83,17 @@ void Booster::update_gradients() {
 
 void Booster::boost(vector<vector<Tree>> &boosted_model) {
     TIMED_FUNC(timerObj);
-
+//    std::unique_lock<std::mutex> lock(mtx);
+    //update gradients
     obj->get_gradient(y, fbuilder->get_y_predict(), gradients);
 
+//    if (param.bagging) rowSampler.do_bagging(gradients);
     PERFORMANCE_CHECKPOINT(timerObj);
-
+    //build new model/approximate function
     boosted_model.push_back(fbuilder->build_approximate(gradients));
 
     PERFORMANCE_CHECKPOINT(timerObj);
-
+    //show metric on training set
     std::ofstream myfile;
     myfile.open ("data-base.txt", std::ios_base::app);
     myfile << fbuilder->get_y_predict() << "\n";
@@ -74,14 +103,17 @@ void Booster::boost(vector<vector<Tree>> &boosted_model) {
 
 void Booster::boost_without_prediction(vector<vector<Tree>> &boosted_model) {
     TIMED_FUNC(timerObj);
-
+//    std::unique_lock<std::mutex> lock(mtx);
+    //update gradients
     obj->get_gradient(y, fbuilder->get_y_predict(), gradients);
+    //LOG(INFO)<<"gradients after updated:"<<gradients;
 
+//    if (param.bagging) rowSampler.do_bagging(gradients);
     PERFORMANCE_CHECKPOINT(timerObj);
-
+    //build new model/approximate function
     boosted_model.push_back(fbuilder->build_approximate(gradients, false));
 
     PERFORMANCE_CHECKPOINT(timerObj);
-
+    //show metric on training set
     LOG(INFO) << metric->get_name() << " = " << metric->get_score(fbuilder->get_y_predict());
 }

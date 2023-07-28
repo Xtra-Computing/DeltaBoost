@@ -194,18 +194,6 @@ public:
         return vec_copy;
     }
 
-//    std::vector<T> move_to_vec() const {
-//        // move a sync array to a vector, the sync array will be empty after this operation
-//        // directly transfer the ownership of the memory to the vector to avoid copy
-//        std::vector<T> vec_move;
-//        vec_move.resize(size());
-//        vec_move.data() = mem->transfer_host_data();
-//
-//        //empty the sync array
-//        size_ = 0;
-//        return vec_move;
-//    }
-
     void load_from_vec(const std::vector<T>& vec) {
         this->resize(vec.size());
         this->copy_from(vec.data(), vec.size());

@@ -11,7 +11,7 @@
 
 #include "FedTree/Tree/tree.h"
 #include "FedTree/Tree/delta_tree_remover.h"
-//#include "deltaboost.h"
+#include "deltaboost.h"
 #include <FedTree/metric/metric.h>
 
 #include <memory>

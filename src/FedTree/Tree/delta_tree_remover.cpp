@@ -53,24 +53,11 @@ void DeltaTreeRemover::remove_samples_by_indices(const vector<int>& indices) {
         gh_pair_vec[i] = -gh_pairs[indices[i]];
     }
 
-    typedef std::chrono::high_resolution_clock timer;
-    auto start_time = timer::now();
-    auto end_time = timer::now();
-    std::chrono::duration<double> duration = end_time - start_time;
 //    get_invalid_sp(tree_ptr->dense_bin_id, tree_ptr->cut, indices, invalid_bids);
-
-    start_time = timer::now();
     get_invalid_sp(tree_ptr->cut, *dataSet, indices, param.max_bin_size);
-    end_time = timer::now();
-    duration = end_time - start_time;
-    LOG(DEBUG) << "get_invalid_sp time: " << duration.count() << "s";
 
     // this function is parallel
-    start_time = timer::now();
     adjust_split_nbrs_by_indices(indices, gh_pair_vec, true);
-    end_time = timer::now();
-    duration = end_time - start_time;
-    LOG(DEBUG) << "adjust_split_nbrs_by_indices time: " << duration.count() << "s";
 }
 
 

@@ -296,6 +296,15 @@ void DataSet::load_from_file(string file_name, FLParam &param) {
     auto t_end = timer.now();
     std::chrono::duration<float> used_time = t_end - t_start;
     LOG(INFO) << "Load dataset using time: " << used_time.count() << " s";
+
+//    // TODO Estimate the required memory
+//    int nnz = this->csr_val.size();
+//    double mem_size = (double)nnz / 1024;
+//    mem_size /= 1024;
+//    mem_size /= 1024;
+//    mem_size *= 12;
+//    if(mem_size > (5 * param.n_device))
+//        this->use_cpu = true;
 }
 
 //void DataSet::load_from_file_dense(string file_name, FLParam &param){
@@ -579,6 +588,45 @@ void DataSet::load_csc_from_file(string file_name, FLParam &param, const int nfe
     LOG(INFO) << "csc_col_ptr: " << csc_col_ptr;
     LOG(INFO) << "#features: " << n_features_;
 }
+
+
+//void DataSet::csr_to_csc() {
+//    has_csc = true;
+//    const int nnz = csr_row_ptr[n_instances()];
+//
+//    //compute number of non-zero entries per column of A
+//    std::fill(csc_col_ptr.begin(), csc_col_ptr.begin() + n_features(), 0);
+//
+//    for (int n = 0; n < nnz; n++) {
+//        csc_col_ptr[csr_col_idx[n]]++;
+//    }
+//
+//    //cumsum the nnz per column to get csc_col_ptr[]
+//    for (int col = 0, cumsum = 0; col < n_features(); col++) {
+//        int temp = csc_col_ptr[col];
+//        csc_col_ptr[col] = cumsum;
+//        cumsum += temp;
+//    }
+//    csc_col_ptr[n_features()] = nnz;
+//
+//    for (int row = 0; row < n_features(); row++) {
+//        for (int jj = csr_row_ptr[row]; jj < csr_row_ptr[row + 1]; jj++) {
+//            int col = csr_col_idx[jj];
+//            int dest = csc_col_ptr[col];
+//
+//            csc_row_idx[dest] = row;
+//            csc_val[dest] = csr_val[jj];
+//
+//            csc_col_ptr[col]++;
+//        }
+//    }
+//
+//    for (int col = 0, last = 0; col <= n_features(); col++) {
+//        int temp = csc_col_ptr[col];
+//        csc_col_ptr[col] = last;
+//        last = temp;
+//    }
+//}
 
 void DataSet::csr_to_csc(){
 //    LOG(INFO) << "convert csr to csc using cpu...";
@@ -869,7 +917,34 @@ void DataSet::load_from_csv(string file_name, FLParam &param) {
 
 
 void DataSet::get_subset(vector<int> &idx, DataSet& subset){
-
+//    if(has_csc){
+//        subset.csc_val.clear();
+//        subset.csc_row_idx.clear();
+//        subset.csc_col_ptr.clear();
+//        subset.csc_col_ptr.push_back(0);
+//        subset.n_features_ = n_features();
+//        subset.y.clear();
+//        std::sort(idx.begin(), idx.end());
+//        for(int i = 0; i < idx.size(); i++){
+//            subset.y.push_back(y[idx[i]]);
+//        }
+//        for(int i = 0; i < csc_col_ptr.size() - 1; i++){
+//            int n_val = 0;
+//            for(int j = csc_col_ptr[i]; j < csc_col_ptr[i+1]; j++){
+//                int rid = csc_row_idx[j];
+//                int offset = std::find(idx.begin(), idx.end(), rid) - idx.begin();
+//                if(offset != idx.size()){
+//                    float_type val = csc_val[j];
+//                    subset.csc_val.push_back(val);
+//                    subset.csc_row_idx.push_back(offset);
+//                    n_val++;
+//                }
+//            }
+//            subset.csc_col_ptr.push_back(n_val + subset.csc_col_ptr.back());
+//        }
+//        subset.csc_to_csr();
+//    }
+//    else {
     subset.csr_val.clear();
     subset.csr_col_idx.clear();
     subset.csr_row_ptr.clear();
@@ -963,6 +1038,22 @@ void DataSet::update_sampling_by_hashing_(int total_sampling_round) {
      * This function updates sampled_datasets to size total_sampling_round
      */
 
+//    std::uniform_int_distribution<std::mt19937::result_type> dist(std::mt19937::min(), std::mt19937::max());
+//    auto hash_seed = dist(rng);
+//
+//    // map each instance to a "random" value by hashing
+//    vector<int> row_category(n_instances());
+//#pragma omp parallel for
+//    for (int i = 0; i < this->n_instances(); ++i) {
+//        if (n_features_ > 0) {
+//            void *row_start = csr_val.data() + csr_row_ptr[i];
+//            int row_len = (csr_row_ptr[i+1] - csr_row_ptr[i]) * static_cast<int>(sizeof(float_type));
+//            uint32_t row_hash = 0;
+//            MurmurHash3_x86_32(row_start, row_len, hash_seed, &row_hash);
+//            row_category[i] = static_cast<int>(row_hash % total_sampling_round);
+//        }
+//    }
+
     vector<int> row_category(n_instances());
 #pragma omp parallel for
     for (int i = 0; i < this->n_instances(); ++i) {
@@ -974,6 +1065,18 @@ void DataSet::update_sampling_by_hashing_(int total_sampling_round) {
     for (int i = 0; i < n_instances(); ++i) {
         subset_indices[row_category[i]].push_back(i);
     }
+
+//    vector<vector<int>> sampled_indices(4);
+//    for (int i = 0; i < n_instances(); ++i) {
+//        if (i < 29977) {
+//            sampled_indices[0].push_back(i);
+//            sampled_indices[1].push_back(i);
+//        } else {
+//            sampled_indices[2].push_back(i);
+//            sampled_indices[3].push_back(i);
+//        }
+//    }
+//    subset_indices = sampled_indices;
 
     sampled_datasets.clear();
     sampled_datasets.resize(total_sampling_round);

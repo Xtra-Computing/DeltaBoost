@@ -3,6 +3,7 @@
 //
 
 #include "FedTree/predictor.h"
+#include "FedTree/util/device_lambda.h"
 #include "FedTree/objective/objective_function.h"
 
 void Predictor::get_y_predict (const GBDTParam &model_param, const vector<vector<Tree>> &boosted_model,
