@@ -33,6 +33,7 @@ DeltaBoost is a machine learning model based on gradient boosting decision tree 
 
 ## Environment
 The required packages for DeltaBoost includes 
+* g++-10 or above
 * CMake 3.15 or above
 * GMP
 * NTL
