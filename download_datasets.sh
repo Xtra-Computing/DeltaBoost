@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p data
 
 echo "Downloading codrna from LIBSVM"
