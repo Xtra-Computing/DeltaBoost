@@ -9,7 +9,7 @@ echo "Downloading datasets and removing samples"
 bash download_datasets.sh
 
 # build DeltaBoost
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make -j
 cd ..   # under root dir of DeltaBoost
