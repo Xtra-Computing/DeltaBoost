@@ -41,6 +41,8 @@ The recommended approach for environment configuration is through a docker image
 
 The required packages for DeltaBoost includes 
 * g++-10 or above
+* OpenSSL
+* OpenCL
 * CMake 3.15 or above
 * GMP
 * NTL
@@ -60,6 +62,18 @@ sudo make install
 If `NTL` is not installed under default folder, you need to specify the category of NTL during compilation by
 ```shell
 cmake .. -DNTL_PATH="PATH_TO_NTL"
+```
+
+### Install OpenSSL
+For Debian, run
+```shell
+sudo apt install libssl-dev
+```
+
+### Install OpenCL
+For Debian, run
+```shell
+sudo apt install opencl-headers
 ```
 
 ### Install GMP
