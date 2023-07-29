@@ -49,6 +49,12 @@ The required packages for DeltaBoost includes
 * Boost
 * Python 3.9+
 
+### Install G++, GCC, OpenSSL, OpenCL, cmake and GMP
+
+```shell
+sudo apt install gcc-10 g++-10 libssl-dev opencl-headers cmake libgmp3-dev
+```
+
 ### Install NTL
 The NTL can be installed from source by 
 ```shell
@@ -64,24 +70,6 @@ If `NTL` is not installed under default folder, you need to specify the category
 cmake .. -DNTL_PATH="PATH_TO_NTL"
 ```
 
-### Install OpenSSL
-For Debian, run
-```shell
-sudo apt install libssl-dev
-```
-
-### Install OpenCL
-For Debian, run
-```shell
-sudo apt install opencl-headers
-```
-
-### Install GMP
-The GMP can be directly installed by `apt` on Debian-based Linux, e.g. Ubuntu.
-```shell
-sudo apt-get install libgmp3-dev
-```
-
 ### Install Boost
 DeltaBoost requires `boost >= 1.75.0`. Since it may not be available on official `apt` repositories, you may need to install manually.
 
@@ -92,7 +80,7 @@ tar -xvf boost_1_75_0.tar.bz2
 ```
 Install dependencies for building boost.
 ```shell
-sudo apt-get install build-essential g++ python-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev
+sudo apt-get install build-essential autotools-dev libicu-dev libbz2-dev libboost-all-dev
 ```
 Start building.
 ```shell
