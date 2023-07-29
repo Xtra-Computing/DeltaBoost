@@ -1,4 +1,6 @@
 mkdir -p cache out fig
+alias python=python3
+alias pip=pip3
 
 echo "Installing Python dependencies"
 pip install -r requirements.txt
