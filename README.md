@@ -6,7 +6,8 @@ DeltaBoost is a machine learning model based on gradient boosting decision tree 
 <!-- TOC -->
 * [DeltaBoost Documentation](#deltaboost-documentation)
 * [Getting Started](#getting-started)
-  * [Environment](#environment)
+  * [Environment (Docker)](#environment-docker)
+  * [Environment (Step by Step)](#environment-step-by-step)
     * [Install NTL](#install-ntl)
     * [Install GMP](#install-gmp)
     * [Install Boost](#install-boost)
@@ -31,13 +32,20 @@ DeltaBoost is a machine learning model based on gradient boosting decision tree 
 
 # Getting Started
 
-## Environment
+## Environment (Docker)
+The recommended approach for environment configuration is through a docker image.
+
+
+
+## Environment (Step by Step)
+
 The required packages for DeltaBoost includes 
 * g++-10 or above
 * CMake 3.15 or above
 * GMP
 * NTL
 * Boost
+* Python 3.9+
 
 ### Install NTL
 The NTL can be installed from source by 
