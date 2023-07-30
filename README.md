@@ -33,8 +33,27 @@ DeltaBoost is a machine learning model based on gradient boosting decision tree 
 # Getting Started
 
 ## Environment (Docker)
-The recommended approach for environment configuration is through a docker image.
-
+The **recommended** approach for environment configuration is through a docker image. Download the image by
+```shell
+docker pull jerrylife/deltaboost
+```
+Create a container named `deltaboost` based on the image.
+```shell
+docker run -d -t --name deltaboost jerrylife/deltaboost
+```
+Find the container ID by
+```shell
+docker ps
+```
+Execute the master script in the container 
+```shell
+docker exec -t <container-ID> bash run.sh
+```
+You may also enter the container to observe the results by
+```shell
+docker exec -it <container-ID> bash
+```
+**Important:** `download_datasets.sh` is only tested for fresh execution. If a download is terminated and needed to restart, please remove the data folder by `rm -rf data/` before the next execution.
 
 
 ## Environment (Step by Step)
@@ -108,9 +127,10 @@ Download datasets and remove instances from samples.
 ```shell
 bash download_datasets.sh
 ```
-This script will download 5 datasets from LIBSVM wesbite. After downloading and unzipping, some instances will be removed from these datasets. The removing ratio is `0.1%` and `1%` by default. The time of removal may take several minutes. If more ratios is needed, you can change the `-r` option of `remove_sample.py`.
+This script will download 5 datasets from LIBSVM wesbite. After downloading and unzipping, some instances will be removed from these datasets. The removing ratio is `0.1%` and `1%` by default. The time of removal may take several minutes. If more ratios is needed, you can change the `-r` option of `remove_sample.py`. After the preparation, there should exist a `data/` directory with the following structure.
 
-After the preparation, there should exist a `data/` directory with the following structure.
+**Important:** `download_datasets.sh` is only tested for fresh execution. If a download is terminated and needed to restart, please remove the data folder by `rm -rf data/` beore the next execution.
+
 
 ```text
 data
