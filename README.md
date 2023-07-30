@@ -8,8 +8,8 @@ DeltaBoost is a machine learning model based on gradient boosting decision tree 
 * [Getting Started](#getting-started)
   * [Environment (Docker)](#environment-docker)
   * [Environment (Step by Step)](#environment-step-by-step)
+    * [Install G++, GCC, OpenSSL, OpenCL, cmake and GMP](#install-g-gcc-openssl-opencl-cmake-and-gmp)
     * [Install NTL](#install-ntl)
-    * [Install GMP](#install-gmp)
     * [Install Boost](#install-boost)
   * [Reproduce Main Results (Master Script)](#reproduce-main-results-master-script)
   * [Prepare Data](#prepare-data)
@@ -26,6 +26,7 @@ DeltaBoost is a machine learning model based on gradient boosting decision tree 
     * [Memory Usage (Table 8)](#memory-usage-table-8)
     * [Accuracy (Figure 9)](#accuracy-figure-9)
     * [Ablation Study (Figure 10, 11)](#ablation-study-figure-10-11)
+* [Citation](#citation)
 <!-- TOC -->
 
 [//]: # (Contents)
@@ -41,11 +42,11 @@ Create a container named `deltaboost` based on the image.
 ```shell
 docker run -d -t --name deltaboost jerrylife/deltaboost
 ```
-Find the container ID by
+Find the container ID at the first column by
 ```shell
 docker ps
 ```
-Execute the master script in the container 
+Execute the master script in the container in background
 ```shell
 docker exec -t <container-ID> bash run.sh
 ```
@@ -55,6 +56,7 @@ docker exec -it <container-ID> bash
 ```
 **Important:** `download_datasets.sh` is only tested for fresh execution. If a download is terminated and needed to restart, please remove the data folder by `rm -rf data/` before the next execution.
 
+For convenience of manual configuration, we also provide the Dockerfile for image building.
 
 ## Environment (Step by Step)
 
@@ -681,6 +683,29 @@ To plot all the figures of ablation study into `fig/ablation`, run
 python plot_ablation.py
 ```
 This plotting process takes around **10 minutes**. The major time cost is calculating Hellinger distance.
+
+# Citation
+If you find this repository useful in your research, please cite our paper:
+
+```text
+@article{wu2023deltaboost,
+  author = {Wu, Zhaomin and Zhu, Junhui and Li, Qinbin and He, Bingsheng},
+  title = {DeltaBoost: Gradient Boosting Decision Trees with Efficient Machine Unlearning},
+  year = {2023},
+  issue_date = {June 2023},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {1},
+  number = {2},
+  url = {https://doi-org.libproxy1.nus.edu.sg/10.1145/3589313},
+  doi = {10.1145/3589313},
+  journal = {Proc. ACM Manag. Data},
+  month = {jun},
+  articleno = {168},
+  numpages = {26},
+  keywords = {data deletion, gradient boosting decision trees, machine unlearning}
+}
+```
 
 
 
