@@ -1,5 +1,6 @@
-
 # DeltaBoost Documentation
+**News**: DeltaBoost has won the [Honorable Mention for Best Artifact Award](https://sigmod.org/sigmod-awards/sigmod-best-artifact-award/) in SIGMOD23!
+
 DeltaBoost is a machine learning model based on gradient boosting decision tree (GBDT) that supports efficient machine unlearning, which is published on [SIGMOD 23](https://dl.acm.org/doi/abs/10.1145/3589313). We provide two methods to reproduce the results in the paper: a master script and a step-by-step guide. The master script will automatically download the datasets, build DeltaBoost, run the experiments, and summary results. The estimated execution time of the master script is a week. The step-by-step guide will show how to run each experiment in the paper.
 
 **Contents**
