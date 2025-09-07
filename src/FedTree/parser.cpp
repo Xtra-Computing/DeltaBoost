@@ -19,6 +19,7 @@
 #include "boost/archive/archive_exception.hpp"
 #include "boost/json/src.hpp"
 #include "boost/json.hpp"
+#include <filesystem>
 
 using namespace std;
 
@@ -65,6 +66,7 @@ void Parser::parse_param(FLParam &fl_param, int argc, char **argv) {
     gbdt_param->remain_data_path = "";
     gbdt_param->save_model_name = "";
     gbdt_param->reorder_label = false;
+    gbdt_param->data_format = "auto";
 
     DeltaBoostParam *deltaboost_param = &fl_param.deltaboost_param;
     deltaboost_param->enable_delta = "false";
@@ -138,6 +140,8 @@ void Parser::parse_param(FLParam &fl_param, int argc, char **argv) {
                 gbdt_param->delete_data_path = val;
             else if (str_name.compare("save_model_name") == 0)
                 gbdt_param->save_model_name = val;
+            else if ((str_name.compare("data_format") == 0) || (str_name.compare("format") == 0) || (str_name.compare("file_format") == 0))
+                gbdt_param->data_format = val;
             else if ((str_name.compare("max_bin") == 0) || (str_name.compare("max_num_bin") == 0))
                 gbdt_param->max_num_bin = atoi(val);
             else if ((str_name.compare("colsample") == 0) || (str_name.compare("column_sampling_rate") == 0))
@@ -281,6 +285,15 @@ void Parser::load_model(const string& model_path, GBDTParam &model_param, vector
 
 
 void Parser::save_model(const string& model_path, GBDTParam &model_param, vector<vector<Tree>> &boosted_model, DataSet &dataset) {
+    // ensure parent directory exists
+    {
+        std::filesystem::path p(model_path);
+        auto dir = p.parent_path();
+        if (!dir.empty()) {
+            std::error_code ec;
+            std::filesystem::create_directories(dir, ec);
+        }
+    }
     ofstream out_model_file(model_path, ios::binary);
     CHECK_EQ(out_model_file.is_open(), true);
     int length = model_param.objective.length();
@@ -342,6 +355,15 @@ void Parser::load_model(const string &model_path, DeltaBoostParam &model_param, 
 
 void Parser::save_model(const string &model_path, DeltaBoostParam &model_param, DeltaBoost &model, DataSet &dataSet) {
     const vector<vector<DeltaTree>> &boosted_model = model.trees;
+    // ensure parent directory exists
+    {
+        std::filesystem::path p(model_path);
+        auto dir = p.parent_path();
+        if (!dir.empty()) {
+            std::error_code ec;
+            std::filesystem::create_directories(dir, ec);
+        }
+    }
     ofstream out_model_file(model_path, ios::binary);
     CHECK_EQ(out_model_file.is_open(), true);
     int length = model_param.objective.length();
@@ -386,6 +408,15 @@ void Parser::save_model_to_json(const string &model_path, DeltaBoostParam &model
 
     v["deltaboost"] = json::value_from(model);
 
+    // ensure parent directory exists
+    {
+        std::filesystem::path p(model_path);
+        auto dir = p.parent_path();
+        if (!dir.empty()) {
+            std::error_code ec;
+            std::filesystem::create_directories(dir, ec);
+        }
+    }
     ofstream out_model_file(model_path);
     CHECK_EQ(out_model_file.is_open(), true);
 
@@ -417,6 +448,15 @@ void Parser::save_model_to_json(const string &model_path, GBDTParam &model_param
 
     v["gbdt"] = json::value_from(model);
 
+    // ensure parent directory exists
+    {
+        std::filesystem::path p(model_path);
+        auto dir = p.parent_path();
+        if (!dir.empty()) {
+            std::error_code ec;
+            std::filesystem::create_directories(dir, ec);
+        }
+    }
     ofstream out_model_file(model_path);
     CHECK_EQ(out_model_file.is_open(), true);
 
@@ -428,6 +468,15 @@ void Parser::save_model_to_json(const string &model_path, GBDTParam &model_param
 
 void Parser::save_scores_to_csv(const string &score_path, const vector<float_type> &scores,
                                 const vector<float_type> &labels) {
+    // ensure parent directory exists
+    {
+        std::filesystem::path p(score_path);
+        auto dir = p.parent_path();
+        if (!dir.empty()) {
+            std::error_code ec;
+            std::filesystem::create_directories(dir, ec);
+        }
+    }
     ofstream out_score_file(score_path);
     CHECK_EQ(out_score_file.is_open(), true);
     assert(scores.size() == labels.size());

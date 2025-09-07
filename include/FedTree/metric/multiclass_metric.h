@@ -33,6 +33,19 @@ public:
 
 class BinaryClassMetric: public MulticlassAccuracy{
 public:
+    void configure(const GBDTParam &param, const DataSet &dataset) override {
+        // Be tolerant to eval subsets that may contain a single class.
+        Metric::configure(param, dataset);
+        num_class = param.num_class;
+        label.resize(num_class);
+        if (dataset.label.size() == num_class) {
+            label.copy_from(dataset.label.data(), num_class);
+        } else {
+            std::vector<float_type> default_labels(num_class);
+            for (int i = 0; i < num_class; ++i) default_labels[i] = static_cast<float_type>(i);
+            label.copy_from(default_labels.data(), num_class);
+        }
+    }
     float_type get_score(const SyncArray<float_type> &y_p) const override;
     string get_name() const override { return "error";}
 };

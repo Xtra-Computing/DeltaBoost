@@ -193,6 +193,13 @@ void DeltaTreeBuilder::find_split(int level) {
     int n_column = sorted_dataset.n_features();
     int n_partition = n_column * n_nodes_in_level;
     int n_bins = static_cast<int>(cut.cut_points_val.size());
+    if (n_bins == 0) {
+        // No split bins available globally; stop splitting safely.
+        has_split = false;
+        LOG(INFO) << "no splittable nodes, stop";
+        num_nodes_per_level.emplace_back(n_nodes_in_level);
+        return;
+    }
     int n_max_nodes = n_nodes_in_level * 2;
     int n_max_splits = n_max_nodes * n_bins;
     vector<int> node_indices(n_nodes_in_level);
@@ -1367,8 +1374,13 @@ void DeltaTreeBuilder::get_bin_ids() {
             for (int i = csc_col_ptr_data[cid]; i < csc_col_ptr_data[cid + 1]; i++) {
                 auto search_begin = cut_points_ptr + cut_col_ptr[cid];
                 auto search_end = cut_points_ptr + cut_col_ptr[cid + 1];
+                // If this feature has no cut points, mark as missing/binless
+                if (search_begin == search_end) {
+                    bin_id_data[i] = -1;
+                    continue;
+                }
                 auto val = csc_val_data[i];
-                bin_id_data[i] = lowerBound(search_begin, search_end, val) - search_begin;
+                bin_id_data[i] = static_cast<int>(lowerBound(search_begin, search_end, val) - search_begin);
             }
         }
     }
@@ -1446,8 +1458,6 @@ void DeltaTreeBuilder::update_indices_in_split_nbr(vector<DeltaTree::SplitNeighb
         }
     }
 }
-
-
 
 
 

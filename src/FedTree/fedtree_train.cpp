@@ -10,6 +10,10 @@
 //#include "FedTree/Tree/gbdt.h"
 #include "FedTree/Tree/deltaboost.h"
 
+#include <fstream>
+#include <sstream>
+#include <cctype>
+
 
 #ifdef _WIN32
 INITIALIZE_EASYLOGGINGPP
@@ -94,11 +98,52 @@ int main(int argc, char** argv){
     std::map<int, vector<int>> batch_idxs;
     DataSet dataset;
     bool use_global_test_set = !model_param.test_path.empty();
-    dataset.load_from_csv(model_param.path, fl_param);
+    // Auto-detect data format with optional user override via model_param.data_format
+    auto load_dataset_by_format = [&](DataSet &ds, const std::string &path) {
+        auto to_lower = [](std::string s){ for (auto &c: s) c = (char)std::tolower(c); return s; };
+        std::string forced = to_lower(model_param.data_format);
+        auto detect_format = [&](const std::string &p) {
+            std::ifstream ifs(p, std::ifstream::in);
+            std::string line;
+            while (std::getline(ifs, line)) {
+                // trim and skip comments
+                auto start = line.find_first_not_of(" \t\r\n");
+                if (start == std::string::npos) continue;
+                if (line[start] == '#') continue;
+                if (line.find(',') != std::string::npos) return std::string("csv");
+                if (line.find(':') != std::string::npos) return std::string("libsvm");
+                break;
+            }
+            auto dot = p.find_last_of('.');
+            if (dot != std::string::npos) {
+                auto ext = to_lower(p.substr(dot + 1));
+                if (ext == "csv") return std::string("csv");
+            }
+            return std::string("libsvm");
+        };
+
+        std::string fmt = (forced == "csv" || forced == "libsvm") ? forced : detect_format(path);
+        if (fmt == "csv") {
+            LOG(INFO) << "Auto/forced format: csv for " << path;
+            ds.load_from_csv(path, fl_param);
+        } else {
+            LOG(INFO) << "Auto/forced format: libsvm for " << path;
+            ds.load_from_file(path, fl_param);
+        }
+    };
+
+    load_dataset_by_format(dataset, model_param.path);
+    // Warn early if training data has a single class (can happen on skewed datasets)
+    if (model_param.objective.find("binary:logistic") != std::string::npos) {
+        if (dataset.label.size() <= 1) {
+            LOG(WARNING) << "Training dataset contains " << dataset.label.size()
+                         << " distinct class(es). Classification metrics may be unreliable.";
+        }
+    }
 
     DataSet test_dataset;
     if (use_global_test_set)
-        test_dataset.load_from_csv(model_param.test_path, fl_param);
+        load_dataset_by_format(test_dataset, model_param.test_path);
 
 //    if (ObjectiveFunction::need_group_label(param.gbdt_param.objective)) {
 //        group_label();
@@ -141,10 +186,10 @@ int main(int argc, char** argv){
         bool test_on_remain = !fl_param.gbdt_param.remain_data_path.empty();
         bool test_on_delete = !fl_param.gbdt_param.delete_data_path.empty();
         if (test_on_remain) {
-            remain_dataset.load_from_csv(fl_param.gbdt_param.remain_data_path, fl_param);
+            load_dataset_by_format(remain_dataset, fl_param.gbdt_param.remain_data_path);
         }
         if (test_on_delete) {
-            delete_dataset.load_from_csv(fl_param.gbdt_param.delete_data_path, fl_param);
+            load_dataset_by_format(delete_dataset, fl_param.gbdt_param.delete_data_path);
         }
 
         if (fl_param.deltaboost_param.enable_delta) {

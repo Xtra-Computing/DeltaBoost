@@ -39,6 +39,8 @@ struct GBDTParam {
     std::string remain_data_path;
     std::string delete_data_path;
     std::string save_model_name;
+    // Data format handling: "auto" (default), "csv", or "libsvm"
+    std::string data_format;
 
     bool reorder_label = false;
 };

@@ -73,8 +73,15 @@ public:
     void configure(GBDTParam param, const DataSet &dataset) {
         num_class = param.num_class;
         label.resize(num_class);
-        CHECK_EQ(dataset.label.size(), num_class)<<dataset.label.size() << "!=" << num_class;
-        label.copy_from(dataset.label.data(), num_class);
+        if (dataset.label.size() == num_class) {
+            label.copy_from(dataset.label.data(), num_class);
+        } else {
+            // Fallback: dataset may not contain all classes (e.g., filtered subsets).
+            // Use canonical labels 0..num_class-1 to avoid crashes.
+            std::vector<float_type> default_labels(num_class);
+            for (int i = 0; i < num_class; ++i) default_labels[i] = static_cast<float_type>(i);
+            label.copy_from(default_labels.data(), num_class);
+        }
     }
 protected:
     int num_class;
